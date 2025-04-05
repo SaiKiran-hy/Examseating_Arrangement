@@ -1,3 +1,4 @@
+
 # Exam Seating Arrangement System
 
 A web-based application for managing exam seating arrangements in BTech colleges. Supports both MID examinations and Semester examinations.
@@ -20,3 +21,5 @@ A web-based application for managing exam seating arrangements in BTech colleges
    python app.py
    ```
 4. Access the application at http://localhost:5000
+
+# Examseating_Arrangement

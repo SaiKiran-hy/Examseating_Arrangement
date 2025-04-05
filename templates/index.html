@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="text-center">
+    <h1 class="page-title mb-5">BTech Exam Seating Arrangement System</h1>
+    <div class="row mt-4 g-4">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-4 mb-3 text-primary">
+                        <i class="fas fa-user-graduate"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-3">Manage Students</h5>
+                    <p class="card-text text-muted mb-4">Add, view, and manage student information including roll numbers, branches, and semesters.</p>
+                    <a href="/students" class="btn btn-primary w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Go to Students
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-4 mb-3 text-primary">
+                        <i class="fas fa-door-open"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-3">Manage Halls</h5>
+                    <p class="card-text text-muted mb-4">Configure examination halls, set their capacity, and manage seating arrangements.</p>
+                    <a href="/halls" class="btn btn-primary w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Go to Halls
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-body text-center p-4">
+                    <div class="display-4 mb-3 text-primary">
+                        <i class="fas fa-file-alt"></i>
+                    </div>
+                    <h5 class="card-title fw-bold mb-3">Manage Exams</h5>
+                    <p class="card-text text-muted mb-4">Create and manage examination schedules for both MID and Semester exams.</p>
+                    <a href="/exams" class="btn btn-primary w-100">
+                        <i class="fas fa-arrow-right me-2"></i>Go to Exams
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

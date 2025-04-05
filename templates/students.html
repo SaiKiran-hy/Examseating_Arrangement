@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <!-- Import Data Card -->
+        <div class="card mb-4">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-4">
+                    <i class="fas fa-file-import text-primary me-2"></i>Import Data
+                </h5>
+                <form method="POST" enctype="multipart/form-data" action="{{ url_for('import_data') }}">
+                    <div class="mb-3">
+                        <label for="data_type" class="form-label">Data Type</label>
+                        <select class="form-select" id="data_type" name="data_type" required>
+                            <option value="students">Students</option>
+                            <option value="halls">Halls</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label">Upload File</label>
+                        <input type="file" class="form-control" id="file" name="file" accept=".csv,.xlsx,.xls" required>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Supported formats: CSV, Excel (.xlsx, .xls)
+                        </div>
+                    </div>
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-upload me-2"></i>Import Data
+                        </button>
+                        <div class="btn-group">
+                            <a href="{{ url_for('download_template', data_type='students') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-download me-2"></i>Student Template
+                            </a>
+                            <a href="{{ url_for('download_template', data_type='halls') }}" class="btn btn-outline-primary">
+                                <i class="fas fa-download me-2"></i>Hall Template
+                            </a>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Add Single Student Card -->
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-4">
+                    <i class="fas fa-user-plus text-primary me-2"></i>Add Single Student
+                </h5>
+                <form method="POST" action="{{ url_for('manage_students') }}">
+                    <div class="mb-3">
+                        <label for="roll_number" class="form-label">Roll Number</label>
+                        <input type="text" class="form-control" id="roll_number" name="roll_number" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="branch" class="form-label">Branch</label>
+                        <select class="form-select" id="branch" name="branch" required>
+                            <option value="" disabled selected>Select branch...</option>
+                            <option value="CSE">Computer Science</option>
+                            <option value="ECE">Electronics</option>
+                            <option value="EEE">Electrical</option>
+                            <option value="MECH">Mechanical</option>
+                            <option value="CIVIL">Civil</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="semester" class="form-label">Semester</label>
+                        <select class="form-select" id="semester" name="semester" required>
+                            <option value="" disabled selected>Select semester...</option>
+                            <option value="1">1st Semester</option>
+                            <option value="2">2nd Semester</option>
+                            <option value="3">3rd Semester</option>
+                            <option value="4">4th Semester</option>
+                            <option value="5">5th Semester</option>
+                            <option value="6">6th Semester</option>
+                            <option value="7">7th Semester</option>
+                            <option value="8">8th Semester</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-plus me-2"></i>Add Student
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student List -->
+    <div class="col-md-8">
+        <h2 class="page-title mb-4">
+            <i class="fas fa-users me-2"></i>Student List
+        </h2>
+        {% if students %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="table-light">
+                    <tr>
+                        <th>Roll Number</th>
+                        <th>Name</th>
+                        <th>Branch</th>
+                        <th>Semester</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>
+                            <i class="fas fa-id-card text-primary me-2"></i>
+                            {{ student.roll_number }}
+                        </td>
+                        <td>
+                            <i class="fas fa-user text-primary me-2"></i>
+                            {{ student.name }}
+                        </td>
+                        <td>
+                            <i class="fas fa-code-branch text-primary me-2"></i>
+                            {{ student.branch }}
+                        </td>
+                        <td>
+                            <i class="fas fa-graduation-cap text-primary me-2"></i>
+                            {{ student.semester }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            No students found. Please add students using the form or import from a file.
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="toast-header {% if category == 'success' %}bg-success{% elif category == 'danger' %}bg-danger{% else %}bg-info{% endif %} text-white">
+                    <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %} me-2"></i>
+                    <strong class="me-auto">Notification</strong>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body">
+                    {{ message }}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% endif %}
+{% endwith %}
+{% endblock %}

@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body p-4">
+                <h5 class="card-title fw-bold mb-4">
+                    <i class="fas fa-plus-circle text-primary me-2"></i>Create New Exam
+                </h5>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Exam Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required 
+                               placeholder="e.g., Mathematics Mid Term">
+                    </div>
+                    <div class="mb-3">
+                        <label for="date" class="form-label">Exam Date</label>
+                        <input type="date" class="form-control" id="date" name="date" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="exam_type" class="form-label">Exam Type</label>
+                        <select class="form-select" id="exam_type" name="exam_type" required>
+                            <option value="" disabled selected>Select exam type...</option>
+                            <option value="MID">Mid Examination</option>
+                            <option value="SEMESTER">Semester Examination</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="fas fa-plus me-2"></i>Create Exam
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2 class="page-title">
+            <i class="fas fa-calendar-alt me-2"></i>Examination Schedule
+        </h2>
+        {% if exams %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Exam Name</th>
+                        <th>Date</th>
+                        <th>Type</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for exam in exams %}
+                    <tr>
+                        <td>
+                            <i class="fas fa-file-alt text-primary me-2"></i>
+                            {{ exam.name }}
+                        </td>
+                        <td>
+                            <i class="fas fa-calendar me-2"></i>
+                            {{ exam.date.strftime('%Y-%m-%d') }}
+                        </td>
+                        <td>
+                            <span class="badge {% if exam.exam_type == 'MID' %}bg-info{% else %}bg-primary{% endif %}">
+                                {{ exam.exam_type }}
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <a href="{{ url_for('generate_seating', exam_id=exam.id) }}" 
+                               class="btn btn-primary btn-sm me-2" title="Generate Seating">
+                                <i class="fas fa-random"></i>
+                            </a>
+                            <a href="{{ url_for('view_seating', exam_id=exam.id) }}" 
+                               class="btn btn-info btn-sm" title="View Seating">
+                                <i class="fas fa-eye"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>No exams scheduled yet.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="page-title">
+                <i class="fas fa-chair me-2"></i>Seating Arrangement
+                <small class="text-muted ms-2">{{ exam.name }} - {{ exam.date.strftime('%d %B %Y') }}</small>
+                <button class="btn btn-primary float-end" onclick="window.print()">
+                    <i class="fas fa-print me-2"></i>Print
+                </button>
+            </h2>
+        </div>
+    </div>
+
+    {% if hall_seating %}
+        {% for hall_id, hall_data in hall_seating.items() %}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-building me-2"></i>{{ hall_data.name }}
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered seating-table">
+                        <tbody>
+                            {% for row in range(hall_data.rows) %}
+                            <tr>
+                                {% for col in range(hall_data.columns) %}
+                                    {% set student = hall_data.seats[row][col] %}
+                                    {% if student %}
+                                    <td class="seat occupied">
+                                        <div class="student-info">
+                                            <div class="roll-number">{{ student.roll_number }}</div>
+                                            <div class="name">{{ student.name }}</div>
+                                            <div class="details">
+                                                <span class="branch">{{ student.branch }}</span>
+                                                <span class="semester">Sem {{ student.semester }}</span>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    {% else %}
+                                    <td class="seat empty">
+                                        <div class="empty-seat">
+                                            <i class="fas fa-times"></i>
+                                        </div>
+                                    </td>
+                                    {% endif %}
+                                {% endfor %}
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">
+            <i class="fas fa-info-circle me-2"></i>
+            No seating arrangements generated yet. Please generate seating arrangements first.
+        </div>
+    {% endif %}
+</div>
+
+<style>
+    @media print {
+        .navbar, .btn-print {
+            display: none !important;
+        }
+        .container-fluid {
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+        }
+    }
+    
+    .seating-table {
+        margin-bottom: 0;
+    }
+    
+    .seat {
+        width: 150px;
+        height: 100px;
+        padding: 10px !important;
+        vertical-align: middle;
+        text-align: center;
+    }
+    
+    .seat.empty {
+        background-color: #f8f9fa;
+    }
+    
+    .seat.occupied {
+        background-color: #e3f2fd;
+    }
+    
+    .student-info {
+        font-size: 0.9rem;
+    }
+    
+    .student-info .roll-number {
+        font-weight: bold;
+        color: #0d6efd;
+    }
+    
+    .student-info .name {
+        margin: 2px 0;
+    }
+    
+    .student-info .details {
+        font-size: 0.8rem;
+        color: #6c757d;
+    }
+    
+    .student-info .details span {
+        margin: 0 2px;
+    }
+    
+    .empty-seat {
+        color: #dee2e6;
+        font-size: 1.5rem;
+    }
+</style>
+
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Add New Hall</h5>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Hall Name</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="rows" class="form-label">Number of Rows</label>
+                        <input type="number" class="form-control" id="rows" name="rows" required min="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="columns" class="form-label">Number of Columns</label>
+                        <input type="number" class="form-control" id="columns" name="columns" required min="1">
+                    </div>
+                    <div class="mb-3">
+                        <label for="capacity" class="form-label">Total Capacity</label>
+                        <input type="number" class="form-control" id="capacity" name="capacity" required min="1">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Add Hall</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <h2>Examination Halls</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Hall Name</th>
+                    <th>Rows</th>
+                    <th>Columns</th>
+                    <th>Capacity</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for hall in halls %}
+                <tr>
+                    <td>{{ hall.name }}</td>
+                    <td>{{ hall.rows }}</td>
+                    <td>{{ hall.columns }}</td>
+                    <td>{{ hall.capacity }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
